@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId = "com.kotlincocktail.hotpepperapi"
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -59,12 +59,33 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.navigation:navigation-compose:2.7.6")
 
     //画像表示ライブラリ
     implementation("io.coil-kt:coil-compose:2.5.0")
+    
     //Permission管理
     implementation("com.google.accompanist:accompanist-permissions:0.23.1")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
+    // Retrofit
+    val retrofit = "2.9.0"
+    implementation ("com.squareup.retrofit2:retrofit:$retrofit")
+    implementation ("com.squareup.retrofit2:converter-moshi:$retrofit")
+
+    // Moshi
+    val moshi = "1.8.0"
+    implementation ("com.squareup.moshi:moshi:$moshi")
+    implementation ("com.squareup.moshi:moshi-kotlin:$moshi")
+
+    // Okhttp
+    val okhttp = "4.12.0"
+    implementation ("com.squareup.okhttp3:okhttp:$okhttp")
+    implementation ("com.squareup.okhttp3:logging-interceptor:$okhttp")
+
+    //位置情報
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    
 
 
     testImplementation("junit:junit:4.13.2")
