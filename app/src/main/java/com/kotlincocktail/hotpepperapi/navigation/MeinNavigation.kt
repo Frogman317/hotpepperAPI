@@ -15,16 +15,14 @@ fun MainNavigation(
     navController: NavHostController = rememberNavController(),
     startDestination: String = "search"
 ) {
-    var result: HotpepperAPI.Results? = null
+    var result: HotpepperAPI.GourmetResults? = null
     var selectedData: HotpepperAPI.Shop? = null
     NavHost(
         navController = navController,
         startDestination = startDestination
     ) {
         composable(route = "search") {
-            SearchView(
-                navController = navController
-            ){
+            SearchView{
                 result = it
                 navController.navigate("result")
             }

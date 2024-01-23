@@ -5,37 +5,40 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
+import android.util.Log
 import androidx.core.app.ActivityCompat
-import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
 import com.google.android.gms.location.LocationServices
 
 
 class LocationListener {
+    @OptIn(ExperimentalPermissionsApi::class)
     fun getLocation(
-        activity: Activity,
+        permissionState: PermissionState,
         context: Context,
         callback: (Location?) -> Unit
     ) {
-        val client: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity)
-        if (ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        }
-        client.lastLocation.addOnCompleteListener(activity) { task ->
-            if (task.isSuccessful && task.result != null) {
-                // Location found
-                val location: Location = task.result!!
-                callback(location)
-            } else {
-                // Error getting location
-                callback(null)
+        if (permissionState.hasPermission) {
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+                fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                    if (location != null) {
+                        val lat = location.latitude
+                        val lon = location.longitude
+                        Log.d("TAG", "lat: $lat lon: $lon")
+                        callback(location)
+                    } else {
+                        // Error getting location
+                    }
+                }
             }
+        } else {
+            permissionState.launchPermissionRequest()
         }
     }
 }
