@@ -140,51 +140,54 @@ fun SearchView(
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
                     .padding(vertical = 8.dp),
-                label = { Text(text = "キーワード検索")},
+                label = { Text(text = "キーワード検索") },
                 value = keyword ?: "",
                 onValueChange = { keyword = if (it == "") null else it }
             )
-
-            ExposedDropdownMenuBox(
+        }
+        item {
+            Column {
+                ExposedDropdownMenuBox(
                     expanded = isExpanded,
-            onExpandedChange = { isExpanded = it },
-            modifier = Modifier.padding(vertical = 4.dp)
-            ) {
-                TextField(
-                    label = { Text(text = "ジャンルの選択")},
-                    value = genre?.name ?: "",
-                    onValueChange = {},
-                    readOnly = true,
-                    trailingIcon = {
-                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
-                    },
-                    placeholder = {
-                        Text(text = "選択してください")
-                    },
-                    colors = ExposedDropdownMenuDefaults.textFieldColors(),
-                    modifier = Modifier
-                        .menuAnchor()
-                        .fillMaxWidth(0.8f)
-                )
-                ExposedDropdownMenu(
-                    expanded = isExpanded,
-                    onDismissRequest = {
-                        isExpanded = false
-                    }
+                    onExpandedChange = { isExpanded = it }
                 ) {
-                    genreCode?.results?.genre?.forEach { data ->
-                        DropdownMenuItem(
-                            text = {
-                                Text(text = data.name)
-                            },
-                            onClick = {
-                                genre = data
-                                isExpanded = false
-                            }
-                        )
+                    TextField(
+                        label = { Text(text = "ジャンルの選択")},
+                        value = genre?.name ?: "",
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = {
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
+                        },
+                        placeholder = {
+                            Text(text = "選択してください")
+                        },
+                        colors = ExposedDropdownMenuDefaults.textFieldColors(),
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth(0.8f)
+                    )
+                    ExposedDropdownMenu(
+                        expanded = isExpanded,
+                        onDismissRequest = {
+                            isExpanded = false
+                        }
+                    ) {
+                        genreCode?.results?.genre?.forEach { data ->
+                            DropdownMenuItem(
+                                text = {
+                                    Text(text = data.name)
+                                },
+                                onClick = {
+                                    genre = data
+                                    isExpanded = false
+                                }
+                            )
+                        }
                     }
                 }
             }
+
         }
         item {
             Text(text = "検索範囲")
